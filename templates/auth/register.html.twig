@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+<section class="authSection">
+  <div class="container-fluid p-0">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <img src="{{ asset('img/register.jpg') }}" alt="header-image" class="registerPageImage">
+      </div>
+
+      <div class="col-12 col-md-6 d-flex align-items-center justify-content-center py-5">
+        <div class="authForm w-100" style="max-width: 420px;">
+          <div class="h4 mb-2 text-start">Inscription</div>
+          <div class="formSubTitle mb-4">Tous les champs sont obligatoires.</div>
+
+          {# Erreurs globales #}
+          {{ form_errors(registrationForm) }}
+
+          {{ form_start(registrationForm, {'attr': {'class': 'registerForm d-flex flex-column gap-3', 'data-turbo': 'false'}}) }}
+
+            {{ form_row(registrationForm.lastName) }}
+            {{ form_row(registrationForm.firstName) }}
+            {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.plainPassword.first) }}
+            {{ form_row(registrationForm.plainPassword.second) }}
+            {{ form_row(registrationForm.agreeTerms) }}
+
+            <button type="submit" class="button button-submit mt-2">S'inscrire</button>
+
+            <a href="{{ path('app_login') }}" class="text-center text-decoration-underline mt-3">
+              Vous avez déjà un compte ? Se connecter
+            </a>
+
+          {{ form_end(registrationForm) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Authentication Page{% endblock %}
+
+{% block body %}
+<section class="authSection">
+    <div class="container-fluid p-0">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <img src="{{asset('img/conviction.jpg')}}" alt="header-image" class="authPageImage">
+            </div>
+            <div class="col-12 col-md-6 bg-ligh d-flex flex-column pt-5">
+                {% if error %}
+                <div class="error-login">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                <div class="authForm d-flex flex-column align-items-center justify-content-center">                   
+                    <form action="{{ path('app_login') }}" method="post" class="d-flex flex-column gap-3">
+                        <div class="h4 mb-4 text-start">Connexion</div>
+                        <label for="username">Adresse email</label>
+                        <input type="email" id="username" name="_username" value="{{ last_username }}">
+
+                        <label for="password">Mot de passe</label>
+                        <input type="password" id="password" name="_password">
+
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                        
+                        <button class="button button-submit mt-4">Se connecter</button>
+                        <a href="{{ path('app_register') }}" class="link-logout text-center text-decoration-underline mt-4">Pas de compte ? S'inscrire</a>
+                    </form>
+                </div>
+            </div>
+        </div>           
+    </div>
+</section>
+{% endblock %}

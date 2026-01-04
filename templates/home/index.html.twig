@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+<section class="headerSection">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-md-6 bg-ligh d-flex align-items-center justify-content-center">
+                <div class="speechHeader">
+                    <div class="speechTitle">Bienvenue</div>
+                    <div class="speechContent">
+                        <p>Découvrez notre univers de produits durables et éthiques pour une consommation responsable</p>
+                        <p>Retrouvez des articles d’hygiène & beauté, des accessoires & boissons et du prêt à porter</p>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-12 col-md-6">
+                <img src="{{asset('img/header-img.jpg')}}" alt="header-image" class="headerImage">
+            </div>
+        </div>           
+    </div>
+</section>
+<section class="ourProducts">
+    <div class="container-fluid">
+        <div class="row sectionTitle">
+            NOS PRODUITS
+        </div>
+        <div class="row">
+        {% for product in products %}
+            <div class="col-12 col-md-4 bg-ligh d-flex align-items-center justify-content-center">
+                <div class="card" style="width: 100%;">
+                    <img class="card-img-top" src="{{ asset('img/products/compressed/' ~ product.imageFileName) }}" alt="Card image cap">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.shortDescription }}</p>
+                        <p class="card-text cardPrice">{{ product.price|number_format(2, ',', ' ') }}€</p>
+                        <a href="{{ path('app_product_show', { 'id': product.id }) }}">Voir le produit</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+                <p>Aucun produit pour le moment.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<section class="conviction">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-md-4 d-flex align-items-end">
+                <div class="speechConviction">
+                    <div class="speechConvictionTitle mb-2">NOTRE CONVICTION</div>
+                    <div class="speechConvictionContent">
+                        <p>Chez GreenGoodies, nous croyons en un monde où le commerce peut être synonyme de bien-être pour la planète et ses habitants. Notre mission est de vous proposer une sélection rigoureuse de produits qui allient qualité, durabilité et éthique</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+
+            <div class="col-12 col-md-4 p-0">
+                <img src="{{asset('img/conviction.jpg')}}" alt="header-image" class="convictionImage img-fluid">
+            </div>
+        </div>           
+    </div>
+</section>
+<section class="values">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-md-4 p-0">
+                <img src="{{asset('img/values.jpg')}}" alt="header-image" class="valueImage img-fluid">
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-12 col-md-4 bg-ligh d-flex align-items-end">
+                <div class="speechValue">
+                    <div class="speechValueTitle mb-2">NOS VALEURS</div>
+                    <div class="speechValueContent pe-4">
+                        <p>
+                            Durabilité : Nous sélectionnons soigneusement des produits qui respectent l'environnement et favorisent la durabilité.
+                            Éthique : Nous nous engageons à travailler avec des partenaires et des fournisseurs qui partagent nos valeurs éthiques.
+                            Écologie : Nous encourageons des pratiques respectueuses de l'écosystème et privilégions les matériaux écologiques.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>           
+    </div>
+</section>
+{% endblock %}

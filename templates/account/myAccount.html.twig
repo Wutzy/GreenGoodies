@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Authentication Page{% endblock %}
+
+{% block body %}
+<section class="accountSection w-100">
+  <div class="container-fluid px-0">
+    <div class="row g-0 justify-content-center">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">{{ message }}</div>
+            {% endfor %}
+        {% endfor %}
+      <div class="h4 text-center mb-3">Mon compte</div>
+      {% if user %}
+      {{ user.firstName }}
+      {% endif %}
+    </div>
+    <div class="row g-0 d-flex flex-column align-items-center justify-content-center">
+        <div class="myOrders p-5 d-flex flex-column align-items-center">
+            {% if orders is empty %}
+                <p>Vous n'avez aucune commande pour l'instant.</p>
+            {% else %}
+            <div class="w-100 mb-3 title">Mes commandes</div>
+            <div class="row w-100 g-0 d-flex justify-content-between">
+                <div class="col-4 mb-3">
+                    <div class="w-100 d-flex justify-content-start">N°</div>
+                </div>
+                <div class="col-4 pe-3">
+                    <div class="w-100 d-flex justify-content-center pe-3">Date</div>
+                </div>
+                <div class="col-4 pe-3 ">
+                    <div class="w-100 d-flex justify-content-end">Prix</div>
+                </div>
+            </div>
+            {% for order in orders %}
+            <div class="orderDetails row w-100 g-0 mb-4 pb-4 d-flex justify-content-between">
+                <div class="col-4">
+                    <div class="w-100 d-flex justify-content-start">{{ order.id }}</div>
+                </div>
+                <div class="col-4">
+                    <div class="w-100 d-flex justify-content-center">{{ order.createdAt|date('d/m/Y') }}</div>
+                </div>
+                <div class="col-4">
+                    <div class="w-100 d-flex justify-content-end">{{ order.total|number_format(2, ',', ' ') }}€</div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+            
+        </div>
+        <div class="myOrders mt-3 mb-5 p-5 d-flex flex-column align-items-center">
+            <div class="validateCart d-flex justify-content-center">
+            {% if app.user.apiEnabled %}
+                {# Désactiver l’API #}
+                <form method="post" action="{{ path('app_account_api_disable') }}" onsubmit="return confirm('Voulez-vous vraiment désactiver votre accès API ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('toggle-api') }}">
+                    <button class="button button-submit mt-2">
+                        Désactiver mon accès API
+                    </button>
+                </form>
+            {% else %}
+                {# Activer l’API #}
+                <form method="post" action="{{ path('app_account_api_enable') }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('toggle-api') }}">
+                    <button class="button button-submit mt-2">
+                        Activer mon accès API
+                    </button>
+                </form>
+            {% endif %}
+            </div>
+        </div>
+        <div class="myOrders mt-3 mb-5 p-5 d-flex flex-column align-items-center">
+            <div class="validateCart d-flex justify-content-center">
+                <form method="post"
+                    action="{{ path('app_account_delete') }}"
+                    onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est définitive.');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete-account') }}">
+                    <button class="deleteAccount button button-submit mt-2">
+                        Supprimer mon compte
+                    </button>
+                </form>
+            </div>
+        </div>
+  </div>
+</section>
+{% endblock %}
