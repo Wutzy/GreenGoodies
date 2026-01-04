@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon panier{% endblock %}
+
+{% block body %}
+<section class="cartSection w-100">
+  <div class="container-fluid px-0">
+
+    <div class="row g-0 justify-content-center">
+      <div class="h4 text-center mb-3">Mon Panier</div>
+    </div>
+    <div class="row g-0 text-center mb-3">
+      <form method="post" action="{{ path('app_cart_clear') }}" class="justify-content-center">
+        <input type="hidden" name="_token" value="{{ csrf_token('cart-clear') }}">
+        <button type="submit" class="dropCart btn btn-link p-0 text-decoration-none text-start">
+          x Vider mon panier
+        </button>
+      </form>
+    </div>
+
+    {% if cartItems is empty %}
+      <div class="row g-0 justify-content-center">
+        <div class="cartProduct p-5 text-center">
+          Votre panier est vide.
+        </div>
+      </div>
+    {% else %}
+      {% for label, messages in app.flashes %}
+        {% for message in messages %}
+          <div class="alert alert-{{ label }} m-3">{{ message }}</div>
+        {% endfor %}
+      {% endfor %}
+      {% for item in cartItems %}
+        <div class="row g-0 mb-1 justify-content-center">
+          <div class="cartProduct p-5 d-flex align-items-center">
+            <img
+              src="{{ asset('img/products/compressed/' ~ item.product.imageFileName) }}"
+              alt="{{ item.product.name }}"
+              class="productCartImage"
+            >
+
+            <div class="productCartDetails ps-5 d-flex flex-column justify-content-center w-100">
+              <div class="productDetailsName">{{ item.product.name }}</div>
+
+              <div class="d-flex align-items-center gap-3 mt-2">
+                <div class="productDetailsQuantity">Quantité : {{ item.quantity }}</div>
+              </div>
+
+              <div class="productDetailsPrice mt-2">
+                {{ item.total|number_format(2, ',', ' ') }}€
+              </div>
+            </div>
+
+          </div>
+        </div>
+      {% endfor %}
+
+      <div class="row g-0 justify-content-center">
+        <div class="totalCart p-5 d-flex flex-column align-items-end justify-content-end">
+          <div class="totalCartPrice">
+            Total panier: <span>{{ total|number_format(2, ',', ' ') }}€</span>
+          </div>
+          <div class="freeShipping">Frais de livraison: Offert</div>
+        </div>
+      </div>
+
+      <div class="row g-0 justify-content-center mt-3">
+        <div class="validateCart d-flex justify-content-center">
+          <form method="post" action="{{ path('app_cart_checkout') }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('cart-checkout') }}">
+            <button type="submit" class="button button-submit mt-2">
+              Valider la commande
+            </button>
+          </form>
+        </div>
+      </div>
+
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}
